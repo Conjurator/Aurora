@@ -20,6 +20,11 @@ function createMesh(geom, imageFile, bump) {
 var scene = new THREE.Scene();
 var camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.1, 1000 );
 
+var trackballControls = new THREE.TrackballControls(camera);
+trackballControls.rotateSpeed = 1.0;
+trackballControls.zoomSpeed = 1.0;
+trackballControls.panSpeed = 1.0;
+
 var renderer = new THREE.WebGLRenderer();
 renderer.setClearColor(new THREE.Color(0xEEEEEE));
 renderer.setSize( window.innerWidth, window.innerHeight );
