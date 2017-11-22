@@ -1,14 +1,16 @@
 import * as THREE from 'three';
+import stone from '../img/stone.jpg';
+import stoneBump from '../img/stone-bump.jpg';
 
 function createMesh(geom, imageFile, bump) {
 	var loader = new THREE.TextureLoader();
-	var texture = loader.load("./../img/" + imageFile);
+	var texture = loader.load(imageFile);
 	geom.computeVertexNormals();
 	var mat = new THREE.MeshPhongMaterial();
 	mat.map = texture;
 
 	if (bump) {
-		var bump = loader.load("./../img/" + bump);
+		var bump = loader.load(bump);
 		mat.bumpMap = bump;
 		mat.bumpScale = 0.2;
 	}
@@ -30,7 +32,7 @@ var count = 0;
 var count1 = 0;
 for(var i=0; i<5; i++) {
 	var height = Math.ceil(Math.random()*3)
-	var cube = createMesh(new THREE.BoxGeometry( 1, height, 1 ), "stone.jpg");
+	var cube = createMesh(new THREE.BoxGeometry( 1, height, 1 ), stone);
 	scene.add( cube );
 	cube.position.x=-1;
 	cube.position.y= (height - 3)/2;
@@ -41,7 +43,7 @@ for(var i=0; i<5; i++) {
 
 for(var i=0; i<5; i++) {
 	var height = Math.ceil(Math.random()*3)
-	var cube = createMesh(new THREE.BoxGeometry( 1, height, 1 ), "stone.jpg", "stone-bump.jpg");
+	var cube = createMesh(new THREE.BoxGeometry( 1, height, 1 ), stone, stoneBump);
 	scene.add( cube );
 	cube.position.x=1;
 	cube.position.y= (height - 3)/2;
@@ -50,7 +52,7 @@ for(var i=0; i<5; i++) {
 }
 function createBuild() {
 	var height2 = Math.ceil(Math.random()*3)
-	var cube2 = createMesh(new THREE.BoxGeometry( 1, height2, 1 ), "stone.jpg");
+	var cube2 = createMesh(new THREE.BoxGeometry( 1, height2, 1 ), stone);
 	scene.add( cube2 );
 	cube2.position.x=-1;
 	cube2.position.y= (height2 - 3)/2;
@@ -58,7 +60,7 @@ function createBuild() {
 	cube2.position.z = count;
 
 	var height3 = Math.ceil(Math.random()*3)
-	var cube3 = createMesh(new THREE.BoxGeometry( 1, height3, 1 ), "stone.jpg", "stone-bump.jpg");
+	var cube3 = createMesh(new THREE.BoxGeometry( 1, height3, 1 ), stone, stoneBump);
 	scene.add( cube3 );
 	cube3.position.x=1;
 	cube3.position.y= (height3 - 3)/2;
