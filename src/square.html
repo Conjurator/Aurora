@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        html, body {
+            height: 100%;
+        }
+        body {
+            position: relative;
+            -webkit-perspective: 300px;
+			perspective: 300px;
+        }
+        #box {
+            width: 50px;
+            height: 5px;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            -webkit-transform-style: preserve-3d;
+			transform-style: preserve-3d;
+            transform: translateZ(50px);
+        }
+        #box span {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+        }
+        #box span:nth-child(1) {
+            background: red;
+            -webkit-transform: rotateY(0deg) translateZ(-25px);
+            transform: rotateY(0deg) translateZ(-25px);
+        }
+        #box span:nth-child(2) {
+            background: orange;
+            -webkit-transform: rotateY(90deg) translateZ(-25px);
+            transform: rotateY(90deg) translateZ(-25px);
+        }
+        #box span:nth-child(3) {
+            background: pink;
+            -webkit-transform: rotateY(180deg) translateZ(-25px);
+            transform: rotateY(180deg) translateZ(-25px);
+        }
+        #box span:nth-child(4) {
+            background: green;
+            -webkit-transform: rotateY(270deg) translateZ(-25px);
+            transform: rotateY(270deg) translateZ(-25px);
+        }
+        #box span:nth-child(5) {
+            background: blue;
+            -webkit-transform: rotateX(-90deg) translateZ(-25px);
+            transform: rotateX(-90deg) translateZ(-25px);
+        }
+        #box span:nth-child(6) {
+            background: yellow;
+            -webkit-transform: rotateX(90deg) translateZ(-25px);
+            transform: rotateX(90deg) translateZ(-25px);
+        }
+
+        .bg {
+            position: absolute;
+            left: 0;
+            bottom: 50px;
+            width: 100px;
+            height: 560px;
+            
+            
+            overflow: hidden;
+            z-index: 10;
+        }
+        .bg1 {
+            transform: rotateY(45deg);
+        }
+        .bg2 {
+            transform: rotateY(-45deg) ;
+            left: 280px;
+        }
+        .bg .bgImg {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 3000px;
+            height: 560px;
+            background: linear-gradient(to right, red, blue);
+            animation:moveBg 5s infinite;
+        }
+
+        @keyframes moveBg {
+            0% {left:0px;}
+            100% {left:-2900px;}
+        }
+    </style>
+</head>
+<body>
+
+    
+     <div class="bg bg1">
+        <div class="bgImg"></div>
+    </div>
+    <div class="bg bg2">
+        <div class="bgImg"></div>
+    </div> 
+    <script>
+        // 方块移动
+        var box = document.getElementById('box');
+        var oldX = 0;
+        var oldY = 0;
+        var newX = 0;
+        var newY = 0;
+        box.ontouchstart = function(ev) {
+            var target = ev.targetTouches[0];
+            oldX = target.clientX-box.offsetLeft;
+            oldY = target.clientY-box.offsetTop;
+        }
+        box.ontouchmove = function(ev) {
+            var target = ev.targetTouches[0];
+            newX = target.clientX;
+            newY = target.clientY;
+            var left = newX-oldX;
+            var top = newY-oldY;
+            if(left<120) {
+                left = 120;
+            } else if(left>208) {
+                left=208;
+            }
+
+            box.style.left = left+'px';
+            box.style.top = top+'px';
+        }
+    </script>
+</body>
+</html>
