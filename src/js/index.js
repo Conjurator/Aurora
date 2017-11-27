@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import stone from '../img/stone.jpg';
 import stoneBump from '../img/stone-bump.jpg';
+import cameraMove from './cameraMove'
 
 function createMesh(geom, imageFile, bump) {
 	var loader = new THREE.TextureLoader();
@@ -28,6 +29,7 @@ renderer.setSize( window.innerWidth, window.innerHeight );
 renderer.shadowMapEnabled = true;
 document.body.appendChild( renderer.domElement );
 
+cameraMove(renderer.domElement,camera);
 var count = 0;
 var count1 = 0;
 for(var i=0; i<5; i++) {

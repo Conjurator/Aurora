@@ -19,6 +19,11 @@ const config = {
             options: {}  
           }
         ]
+      },
+      {
+        test: /\.js$/,
+        use: ["source-map-loader"],
+        enforce: "pre"
       }
     ]
   },
