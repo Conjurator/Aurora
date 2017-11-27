@@ -1,7 +1,8 @@
 import * as THREE from 'three';
 import stone from '../img/stone.jpg';
 import stoneBump from '../img/stone-bump.jpg';
-import cameraMove from './cameraMove'
+import cameraControl from './cameraControl';
+import moveObject from './moveObject';
 
 // 1、新建场景、相机、渲染器
 var scene = new THREE.Scene();
@@ -12,7 +13,6 @@ renderer.setSize( window.innerWidth, window.innerHeight );
 renderer.shadowMapEnabled = true;
 document.body.appendChild( renderer.domElement );
 
-cameraMove(renderer.domElement,camera);
 var count = 0;
 var count1 = 0;
 for(var i=0; i<5; i++) {
@@ -78,6 +78,7 @@ plane.rotation.x = -0.5 * Math.PI;
 scene.add(plane);
 
 var willAnimate = true;
+
 // 6、动态创建墙
 function createBuild() {
 	var height2 = Math.ceil(Math.random()*3)
@@ -107,7 +108,7 @@ function animate() {
 		createBuild()
 	}
 	if(parseInt(camera.position.z) == "-5") {
-		window.location.href = "http://sec-cdn.static.xiaomi.net/secStatic/groups/miui-sec/duanqi/createGoodsDay/createGoodsDay.html"
+		// window.location.href = "http://sec-cdn.static.xiaomi.net/secStatic/groups/miui-sec/duanqi/createGoodsDay/createGoodsDay.html"
 	}
 	if(willAnimate) {
 		requestAnimationFrame( animate );
@@ -136,97 +137,27 @@ function rotateScene() {
 	} 
 }
 
+//添加事件
 var btn = document.getElementById('btn');
 btn.onclick = function() {
 	if(willAnimate) {
 		stopAnimating()
 		btn.innerHTML = "play"
+		cameraControl.rotate=true;
+		moveObject.canBemoved=false;
 	} else {
 		startAnimating()
 		btn.innerHTML = "stop"
+		cameraControl.rotate=false;
+		moveObject.canBemoved=true;
 	}
 }
 
-// 8、播放动画时，滑屏控制飞行物体位置；暂停动画时，滑屏旋转场景角度
-var rotWorldMatrix;
-function rotateAroundWorldAxis(object, axis, radians) {
-	rotWorldMatrix = new THREE.Matrix4();
-	rotWorldMatrix.makeRotationAxis(axis.normalize(), radians);
-	rotWorldMatrix.multiply(object.matrix);                // pre-multiply
-	object.matrix = rotWorldMatrix;
-	object.rotation.setFromRotationMatrix(object.matrix);
-}
 
-var oldX = 0;
-var oldY = 0;
-var newX = 0;
-var newY = 0;
-var widthMove = 0;
-var heightMove = 0;
-document.addEventListener('touchstart', function(event){
-	var target = event.targetTouches[0];
-	oldX = target.clientX;
-	oldY = target.clientY;
-})
-
-document.addEventListener('touchmove', function(event){
-	event.preventDefault();
-	event.stopPropagation();
-	var target = event.targetTouches[0];
-	newX = target.clientX;
-	newY = target.clientY;
-	var left = newX-oldX;
-	var top = oldY-newY;
-
-	widthMove = left / 1000;
-	if(widthMove > 0.08) {
-		widthMove = 0.08;
-	} else if (widthMove < -0.08) {
-		widthMove = -0.08;
-	}
-	
-	heightMove = top / 2000;
-	if(heightMove > 0.3) {
-		heightMove = 0.3;
-	} else if (heightMove < -0.3) {
-		heightMove = -0.3;
-	}
-
-	widthMove = left / 1000;
-	if(widthMove > 0.08) {
-		widthMove = 0.08;
-	} else if (widthMove < -0.08) {
-		widthMove = -0.08;
-	}
-	
-	heightMove = top / 2000;
-	if(heightMove > 0.3) {
-		heightMove = 0.3;
-	} else if (heightMove < -0.3) {
-		heightMove = -0.3;
-	}
-
-	if(willAnimate) {
-		aircraft.position.x = widthMove;
-		aircraft.position.y = heightMove;
-	} else {
-		if(camera.rotation.x > Math.PI/4) {
-			camera.rotation.x = Math.PI/4
-		} else if(camera.rotation.x < -Math.PI/4) {
-			camera.rotation.x = -Math.PI/4
-		} else if(camera.rotation.y > Math.PI/2) {
-			camera.rotation.y = Math.PI/2
-		} else if(camera.rotation.y < -Math.PI/2) {
-			camera.rotation.y = -Math.PI/2
-		} else {
-			var xAxis = new THREE.Vector3(-top,left,0);
-			rotateAroundWorldAxis(camera, xAxis, Math.PI / 180);
-			camera.rotation.z =0
-		}
-	}
-	
-}, false)
-
+//初始化旋转
+cameraControl.init(renderer.domElement,camera);
+//初始化物体移动
+moveObject.init(aircraft);
 
 
 
